@@ -1,10 +1,12 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
   <meta charset="UTF-8">
   <title>For My Love</title>
   <link rel="stylesheet" href="./css/style.css">
+  <script src="https://cdn.jsdelivr.net/gh/zyoushuo/Blog/hexo/js/mouse_slide.js"></script>
+  <script src="https://cdn.jsdelivr.net/gh/zyoushuo/Blog/hexo/js/clicklove.js"></script>
   <style>
     .corner-image {
       position: absolute;
@@ -82,6 +84,21 @@
       transform: translate(-50%, -50%);
       z-index: 2;
     }
+
+    .time {
+      position: absolute;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      text-align: center;
+      color: #fff;
+      font-size: 25px;
+      line-height: 1.5;
+      z-index: 1;
+      opacity: 0;
+      animation: fade-in 2s ease-in-out forwards;
+      letter-spacing: 5px; /* 添加行间距设置 */
+    }
   </style>
 </head>
 
@@ -94,6 +111,7 @@
     <div class="message1">
     <p id="typed-text1"></p>
   </div>
+  <div class="time" id="clock"></div>
 
 
   <img class="corner-image top-left" src="./images/QR_code.png" alt="Top Left Image">
@@ -170,6 +188,7 @@
     // 页面加载完成后开始打印
     // window.onload = typeWriter1;
     // 页面加载完成后开始打印
+    // 页面加载完成后开始打印
     window.onload = function() {
       typeWriter();
       // 在 typeWriter() 运行完成后调用 typeWriter1()
@@ -177,6 +196,20 @@
         typeWriter1();
       }, text.length * 50); // 假设每个字符的打印时间为 50 毫秒
     };
+
+    function timeElapse(startTime) {
+      const currentTime = new Date();
+      const elapsedTime = currentTime - startTime;
+      const days = Math.floor(elapsedTime / (1000 * 60 * 60 * 24));
+      const hours = Math.floor((elapsedTime % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      const minutes = Math.floor((elapsedTime % (1000 * 60 * 60)) / (1000 * 60));
+      const seconds = Math.floor((elapsedTime % (1000 * 60)) / 1000);
+      document.getElementById("clock").innerHTML = `和宝宝在一起的：第 ${days} 天, ${hours} 小时, ${minutes} 分钟, ${seconds} 秒`;
+    }
+
+    setInterval(function() {
+      timeElapse(new Date("2024-11-29 10:51:00"));
+    }, 1000);
 
 
     (function () {
@@ -1168,6 +1201,7 @@
       }
 
       THREE.OBJLoader = OBJLoader;
+
 
     })();
 
