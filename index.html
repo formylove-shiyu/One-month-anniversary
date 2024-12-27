@@ -4,6 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
   <title>For My Love</title>
   <link rel="stylesheet" href="./css/style.css">
   <script src="https://cdn.jsdelivr.net/gh/zyoushuo/Blog/hexo/js/mouse_slide.js"></script>
@@ -132,8 +133,8 @@
   <script src="./js/script.js"></script>
 
   <!-- 添加音频标签 -->
-  <audio id="bg-music" loop currentTime="30">
-    <source src="./music/王心凌 - 爱你.mp3" type="audio/mpeg">
+  <audio id="bg-music" loop >
+    <source src="./music/ye.mp3" type="audio/mpeg">
   </audio>
   <!-- 添加播放/暂停、音量控制按钮 -->
   <div class="controls" style="position: fixed; bottom: 10px; right: 100px; z-index: 9999;">
@@ -210,6 +211,11 @@
       }
     }
 
+    // 延迟10秒后设置音乐当前时间为10秒
+    setTimeout(function() {
+      const bgMusic = document.getElementById('bg-music');
+      bgMusic.currentTime = 10;
+    }, 10000);
     // 播放/暂停按钮点击事件
     function togglePlayPause() {
       const bgMusic = document.getElementById('bg-music');
