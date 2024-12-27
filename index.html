@@ -3,10 +3,12 @@
 
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>For My Love</title>
   <link rel="stylesheet" href="./css/style.css">
   <script src="https://cdn.jsdelivr.net/gh/zyoushuo/Blog/hexo/js/mouse_slide.js"></script>
   <script src="https://cdn.jsdelivr.net/gh/zyoushuo/Blog/hexo/js/clicklove.js"></script>
+
   <style>
     .corner-image {
       position: absolute;
@@ -83,6 +85,7 @@
       left: 50%;
       transform: translate(-50%, -50%);
       z-index: 2;
+      cursor: pointer; /* 添加鼠标指针样式 */
     }
 
     .time {
@@ -104,7 +107,7 @@
 
 
 <body>
-  <div class="title-text">For My Love</div>
+  <div class="title-text" onclick="window.location.href = 'https://formylove-shiyu.github.io/next1/';">For My Love</div>
   <div class="message">
     <p id="typed-text"></p>
   </div>
@@ -112,6 +115,7 @@
     <p id="typed-text1"></p>
   </div>
   <div class="time" id="clock"></div>
+
 
 
   <img class="corner-image top-left" src="./images/QR_code.png" alt="Top Left Image">
@@ -127,6 +131,18 @@
   <script src='./js/gsap.min.js'></script>
   <script src="./js/script.js"></script>
 
+  <!-- 添加音频标签 -->
+  <audio id="bg-music" loop currentTime="30">
+    <source src="./music/王心凌 - 爱你.mp3" type="audio/mpeg">
+  </audio>
+  <!-- 添加播放/暂停、音量控制按钮 -->
+  <div class="controls" style="position: fixed; bottom: 10px; right: 100px; z-index: 9999;">
+    <button id="play-pause-btn" onclick="togglePlayPause()" style="border-radius: 50%;">&#9654;</button>
+    <input type="range" id="volume-slider" min="0" max="1" step="0.01" value="1" oninput="setVolume(this.value)" style="accent-color: white;">
+    <progress id="music-progress" max="100" value="0" style="accent-color: white;"></progress>
+  </div>
+
+
 
   <script>
     // 文本内容
@@ -139,6 +155,15 @@
     // 获取要显示文本的元素
     const typedTextElement = document.getElementById("typed-text");
 
+    // 为进度条添加事件监听器
+    document.getElementById("music-progress").addEventListener("click", function(event) {
+      const bgMusic = document.getElementById('bg-music');
+      const progressBar = document.getElementById('music-progress');
+      const clickX = event.offsetX; // 获取点击位置的X坐标
+      const progressBarWidth = progressBar.offsetWidth; // 获取进度条的宽度
+      const newTime = (clickX / progressBarWidth) * bgMusic.duration; // 计算新的播放时间
+      bgMusic.currentTime = newTime; // 设置音乐的当前时间
+    });
     // 初始化索引
     let index = 0;
 
@@ -185,9 +210,30 @@
       }
     }
 
-    // 页面加载完成后开始打印
-    // window.onload = typeWriter1;
-    // 页面加载完成后开始打印
+    // 播放/暂停按钮点击事件
+    function togglePlayPause() {
+      const bgMusic = document.getElementById('bg-music');
+      const playPauseBtn = document.getElementById('play-pause-btn');
+      if (bgMusic.paused) {
+        bgMusic.play();
+        playPauseBtn.innerHTML = '&#9208;'; // 暂停按钮
+      } else {
+        bgMusic.pause();
+        playPauseBtn.innerHTML = '&#9654;'; // 播放按钮
+      }
+    }
+
+    // 音量控制滑块事件
+    function setVolume(value) {
+      const bgMusic = document.getElementById('bg-music');
+      bgMusic.volume = value;
+    }
+    // 更新进度条
+    function updateProgress() {
+      const bgMusic = document.getElementById('bg-music');
+      const progressBar = document.getElementById('music-progress');
+      progressBar.value = (bgMusic.currentTime / bgMusic.duration) * 100;
+    }
     // 页面加载完成后开始打印
     window.onload = function() {
       typeWriter();
@@ -195,6 +241,10 @@
       setTimeout(function() {
         typeWriter1();
       }, text.length * 50); // 假设每个字符的打印时间为 50 毫秒
+       // 监听音频播放事件，更新进度条
+    const bgMusic = document.getElementById('bg-music');
+    bgMusic.addEventListener('timeupdate', updateProgress);
+
     };
 
     function timeElapse(startTime) {
@@ -1206,6 +1256,7 @@
     })();
 
   </script>
+
 </body>
 
 </html>
